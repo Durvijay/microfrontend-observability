@@ -44,6 +44,18 @@ Every log emitted through `checkoutLogger` is automatically enriched with:
 }
 ```
 
+## API overview
+
+| Function | Description |
+| --- | --- |
+| `createMicrofrontendObservability(sink)` | Creates an observability manager bound to a `LogSink`. |
+| `registerMicrofrontend(info)` | Registers metadata (`id`, `name`, `version`, `team`, `domain`, plus any custom fields) for a microfrontend. |
+| `createLogger(mfeId)` | Returns a logger whose logs are automatically enriched with that MFE's metadata (fields like `mfe_id`, `mfe_name`, `mfe_version`, `team`, `domain`). |
+
+Each log call forwards to the provided sink and always includes the microfrontend metadata so downstream tools can correlate events to the correct slice of the application.
+
+> The repo includes a minimal test suite that verifies metadata enrichment. Run `npm test` to execute it.
+
 ## Adapter examples
 
 - **Console** – included for local development.
