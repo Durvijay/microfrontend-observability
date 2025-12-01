@@ -1,6 +1,6 @@
 {
   "name": "microfrontend-observability",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vendor-neutral observability helpers for browser-based microfrontends.",
   "type": "module",
   "main": "./dist/index.js",
