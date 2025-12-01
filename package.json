@@ -1,0 +1,33 @@
+{
+  "name": "microfrontend-observability",
+  "version": "0.1.0",
+  "description": "Vendor-neutral observability helpers for browser-based microfrontends.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format esm --clean"
+  },
+  "keywords": [
+    "microfrontend",
+    "logging",
+    "observability"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@datadog/browser-logs": "^5.13.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.4.5"
+  }
+}
