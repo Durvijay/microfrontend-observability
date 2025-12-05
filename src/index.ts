@@ -11,3 +11,4 @@ export {
 
 export { ConsoleLogSink } from './adapters/consoleSink';
 export { DatadogLogsSink, DatadogLoggerLike } from './adapters/datadogLogsSink';
+export { MultiplexLogSink } from './adapters/multiSink';

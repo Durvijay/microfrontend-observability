@@ -85,6 +85,19 @@ Each log call forwards to the provided sink and always includes the microfronten
   // register MFEs and log as shown above
   ```
 
+- **Multiplex** – fan out log events to multiple sinks (e.g., console + Datadog) while tolerating a failure in any one sink.
+
+  ```ts
+  import { ConsoleLogSink, DatadogLogsSink, MultiplexLogSink } from 'microfrontend-observability';
+
+  const multiplexedSink = new MultiplexLogSink([
+    new ConsoleLogSink(),
+    new DatadogLogsSink(datadogLogs.logger),
+  ]);
+
+  const observability = createMicrofrontendObservability(multiplexedSink);
+  ```
+
 Add your own sinks by implementing the `LogSink` interface.
 
 ## Design goals
