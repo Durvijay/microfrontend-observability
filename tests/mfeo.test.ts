@@ -5,6 +5,7 @@ import {
   LogSink,
   createMicrofrontendObservability,
 } from '../src/mfeo';
+import { MultiplexLogSink } from '../src';
 
 class MemorySink implements LogSink {
   public entries: Array<{ level: LogLevel; message: string; context?: LogContext }> = [];
@@ -49,5 +50,33 @@ describe('Microfrontend observability', () => {
     expect(() => observability.createLogger('missing')).toThrowError(
       /Unknown microfrontend id/,
     );
+  });
+
+  it('fans out to multiple sinks and tolerates sink failures', () => {
+    const sinkA = new MemorySink();
+    const sinkB = new MemorySink();
+    const throwingSink: LogSink = {
+      log() {
+        throw new Error('boom');
+      },
+    };
+
+    const observability = createMicrofrontendObservability(
+      new MultiplexLogSink([sinkA, sinkB, throwingSink]),
+    );
+
+    observability.registerMicrofrontend({
+      id: 'mfe_catalog',
+      name: 'catalog',
+      version: '1.0.0',
+    });
+
+    const logger = observability.createLogger('mfe_catalog');
+    logger.warn('ITEM_VIEWED', { sku: 'SKU-123' });
+
+    expect(sinkA.entries).toHaveLength(1);
+    expect(sinkB.entries).toHaveLength(1);
+    expect(sinkA.entries[0]).toMatchObject({ level: 'warn', message: 'ITEM_VIEWED' });
+    expect(sinkB.entries[0]).toMatchObject({ level: 'warn', message: 'ITEM_VIEWED' });
   });
 });
